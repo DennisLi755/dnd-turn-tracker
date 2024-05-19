@@ -1,16 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
-const TurnEntry = ({name, init, health, color}) => {
-  return (
-    <tr>
-      <td style={{color: color}}>{name}</td>
-      <td>{init}</td>
-      <td>{health}</td>
-    </tr>
-  );
-}
-
 function App() {
   const [order, setOrder] = useState([{name: "Name", initiative: "Initiative", health: "Health", color: "black"}]);
   const [name, setName] = useState('');
@@ -19,6 +9,47 @@ function App() {
   let [currentTurn, setCurrentTurn] = useState(null);
   let [prevTurn, setPrevTurn] = useState(null);
   const [start, setStart] = useState(false);
+
+  useEffect(() => {
+    console.log(order);
+  }, [order])
+
+  const bringUp = (index) => {
+    console.log(index);
+    setOrder(order => {
+      const copy = [...order];
+      const temp = copy[index];
+      copy[index] = copy[index - 1];
+      copy[index - 1] = temp;
+      return copy;
+    });
+  };
+
+  const bringDown = (index) => {
+    setOrder(order => {
+      const copy = [...order];
+      const temp = copy[index];
+      copy[index] = copy[index + 1];
+      copy[index + 1] = temp;
+      return copy;
+    });
+  }; 
+
+  const TurnEntry = ({ name, init, health, color, index }) => {
+    return (
+      <tr>
+        <td style={{ color: color }}>{name}</td>
+        <td>{init}</td>
+        <td>{health}</td>
+        {index >= 1 ?
+          <>
+            <button onClick={() => bringUp(index)}>↑</button>
+            <button onClick={() => bringDown(index)}>↓</button>
+          </>
+          : <div></div>}
+      </tr>
+    );
+  };
 
   useEffect(() => {
     if (start) {
@@ -54,7 +85,7 @@ function App() {
 
   const addElement = (e) => {
     e.preventDefault();
-    const entry = { name: name, initiative: init, health: hp, color: "black" };
+    const entry = { name: name, initiative: init, health: hp, color: "black"};
     setOrder([...order, entry]);
   };
 
@@ -62,8 +93,8 @@ function App() {
     <div className="App">
       <p>Turn order:</p>
       <table>
-        {order.map(elem => (
-          <TurnEntry name={elem.name} init={elem.initiative} health={elem.health} color={elem.color} />
+        {order.map((elem, index) => (
+          <TurnEntry name={elem.name} init={elem.initiative} health={elem.health} color={elem.color} index={index} />
         ))}
       </table>
       <form>
