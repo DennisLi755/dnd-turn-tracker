@@ -36,16 +36,29 @@ function App() {
   }; 
 
   const TurnEntry = ({ name, init, health, color, index }) => {
+    const [damage, setDamage] = useState(0);
+
+    const updateHealth = (e) => {
+      e.preventDefault();
+      let newHealth = health - damage;
+      let items = [...order];
+      items[index] = { ...order[index], health: newHealth };
+      setOrder(items);
+    }
+
     return (
       <tr>
         <td style={{ color: color }}>{name}</td>
         <td>{init}</td>
         <td>{health}</td>
         {index >= 1 ?
-          <>
-            <button onClick={() => bringUp(index)}>↑</button>
-            <button onClick={() => bringDown(index)}>↓</button>
-          </>
+          <div style={{display: 'flex', alignItems: 'center', padding: "10px"}}>
+            {index > 1 ? <button onClick={() => bringUp(index)}>↑</button> : <></>}
+            {index < order.length - 1 ? <button onClick={() => bringDown(index)}>↓</button> : <></>}
+            <label>Damage: </label>
+            <input id="damage" type="number" name="damage" placeholder="0" onChange={e => setDamage(e.target.value)}/>
+            <input type="submit" value="Calculate" onClick={e => updateHealth(e)}/>
+          </div>
           : <div></div>}
       </tr>
     );

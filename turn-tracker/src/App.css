@@ -53,6 +53,7 @@ td {
   padding: 5px;
   text-align: center;
   vertical-align:auto;
+  margin: auto;
 }
 
 #sort {
@@ -61,4 +62,8 @@ td {
 
 label {
   padding: 10px;
+}
+
+#damage {
+  width: 50px;
 }
