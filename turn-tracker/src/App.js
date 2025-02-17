@@ -94,17 +94,14 @@ function App() {
     setCurrentTurn(currentTurn => (currentTurn < order.length - 1 ? currentTurn + 1 : 1));
   }
 
-  const sortOrder = () => {
-    setOrder(order => {
-      const sorted = [...order].sort((a, b) => b.initiative - a.initiative);
-      return sorted;
-    });
-  }
-
   const addElement = (e) => {
     e.preventDefault();
     const entry = { name: name, initiative: init, health: hp, color: "black"};
     setOrder([...order, entry]);
+    setOrder(order => {
+      const sorted = [...order].sort((a, b) => b.initiative - a.initiative);
+      return sorted;
+    });
   };
 
   const resetOrder = () => {
@@ -129,8 +126,7 @@ function App() {
         <input id="health" type="number" name="health" placeholder="0" onChange={e => setHp(e.target.value)} />
         <input type="submit" value="Add" id="pad" onClick={e => addElement(e)}/>
       </form>
-      <button onClick={resetOrder}>Reset</button>
-      <button onClick={sortOrder} id="sort">Sort</button>
+      <button onClick={resetOrder} id="sort">Reset</button>
       {start ? <button onClick={nextTurn} id="start">Next</button> : <button onClick={startTracker} id="start">Start</button>}
     </div>
   );
