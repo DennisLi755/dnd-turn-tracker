@@ -2,7 +2,10 @@ import './App.css';
 import { useState, useEffect } from 'react';
 
 function App() {
-  const [order, setOrder] = useState([{name: "Name", initiative: "Initiative", health: "Health", color: "black"}]);
+  const [order, setOrder] = useState(() => {
+    const savedOrder = localStorage.getItem('order');
+    return savedOrder ? JSON.parse(savedOrder) : {name: "Name", initiative: "Initiative", health: "Health", color: "black"};
+  });
   const [name, setName] = useState('');
   const [init, setInit] = useState(0);
   const [hp, setHp] = useState(0);
@@ -12,6 +15,7 @@ function App() {
 
   useEffect(() => {
     console.log(order);
+    localStorage.setItem('order', JSON.stringify(order));
   }, [order])
 
   const bringUp = (index) => {
@@ -117,7 +121,7 @@ function App() {
         <input id="init" type="number" name="init" placeholder="0" onChange={e => setInit(e.target.value)} />
         <label>Health: </label>
         <input id="health" type="number" name="health" placeholder="0" onChange={e => setHp(e.target.value)} />
-        <input type="submit" value="Add" onClick={e => addElement(e)}/>
+        <input type="submit" value="Add" id="pad" onClick={e => addElement(e)}/>
       </form>
       <button onClick={sortOrder} id="sort">Sort</button>
       {start ? <button onClick={nextTurn} id="start">Next</button> : <button onClick={startTracker} id="start">Start</button>}
