@@ -78,7 +78,7 @@ function App() {
       items[currentTurn] = { ...order[currentTurn], color: 'red' };
       setOrder(items);
     }
-  }, [currentTurn, prevTurn, start]);
+  }, [currentTurn, prevTurn, start, order]);
 
   const startTracker = () => {
     let items = [...order];
