@@ -16,7 +16,9 @@ function App() {
 
   useEffect(() => {
     console.log(order);
-    localStorage.setItem('order', JSON.stringify(order));
+    localStorage.setItem('order', JSON.stringify(order.map(orr => {
+      return {name: orr.name, initiative: orr.initiative, health: orr.health, color: "black"};
+    })));
   }, [order])
 
   const bringUp = (index) => {
